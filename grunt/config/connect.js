@@ -4,7 +4,7 @@ var serveStatic = require('serve-static');
 module.exports = function (grunt) {
     return {
         options:    {
-            port:       9000,
+            port:       8080,
             hostname:   '0.0.0.0',
             livereload: 35729
         },

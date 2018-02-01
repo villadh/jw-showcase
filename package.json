@@ -69,6 +69,7 @@
   "scripts": {
     "test": "grunt test:unit",
     "jshint": "jshint -c .jshintrc app/scripts",
+    "deploy": "grunt build && firebase deploy",
     "scss-lint": "scss-lint -c .scss-lint.yml app/styles"
   },
   "pre-commit": [

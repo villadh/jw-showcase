@@ -4,7 +4,6 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'copy:server',
-            'compass:server',
             'ngtemplates:server',
             'template:server',
             'connect:livereload',

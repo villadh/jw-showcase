@@ -6,7 +6,6 @@ module.exports = function (grunt) {
             'clean:dist',
             'ngtemplates',
             'useminPrepare',
-            'compass:dist',
             'concat',
             'copy:dist',
             'cssmin',

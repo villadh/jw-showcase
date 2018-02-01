@@ -53,7 +53,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test:server', [
         'clean:server',
-        'compass',
         'ngtemplates:server',
         'template:serverE2E',
         'copy:server',
