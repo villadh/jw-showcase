@@ -51,8 +51,6 @@
             if (!angular.isString(mediaId) || mediaId === '') {
                 return $q.reject(new Error('mediaId is not given or not a string'));
             }
-// check if url signing is required HV added 2/17/2018
-            //return config.options.useSigning ? getSignedUrl({media:mediaId}) : getItem(config.contentService + '/v2/media/' + mediaId);
             return getItem(config.contentService + '/v2/media/' + mediaId);
         };
 
@@ -75,7 +73,10 @@
                 return $q.reject(new Error('feedId is not given or not a string'));
             }
 		// check if url signing is required HV added 2/16/2018
-            return config.options.useSigning ? getSignedUrl({playlist:feedId}) : getFeed(config.contentService + '/v2/playlists/' + feedId);
+            if(config.options.useSigning) {
+            	return getSignedUrl({playlist:feedId});
+            } 
+            return getFeed(config.contentService + '/v2/playlists/' + feedId);
         };
 
         /**
@@ -274,6 +275,10 @@
          * @returns {Promise}
          */
         function getSignedUrl (data) {
+        	if('undefined' === typeof data.userToken){
+        		data.userToken = 'placeholder';
+        	}
+        	
         	var req = {
         		method: 'POST',
         		url: config.options.firebase.functions + 'token',
@@ -281,9 +286,7 @@
             };
             	return $http(req)
             	  .then(function(response){
-            	  	//var signedUrl = config.contentService + response.data.authToken;
-            	  	//return signedUrl.indexOf('playlist') > 0 ? getFeed(signedUrl) : getItem(signedUrl);
-            	  	return getFeed(config.contentService + response.data.authToken);
+            	  	return getFeed(config.contentService + response.data.playlist);
             	  });
      }
 
