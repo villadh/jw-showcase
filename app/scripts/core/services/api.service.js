@@ -271,7 +271,7 @@
          * Get signed URL from firebase for given playlist id .
          * HV added 2/16/2018
          *
-         * @param {string} playlist id
+         * @param {data} userToken, playlist id
          * @returns {Promise}
          */
         function getSignedUrl (data) {
@@ -286,7 +286,8 @@
             };
             	return $http(req)
             	  .then(function(response){
-            	  	return getFeed(config.contentService + response.data.playlist);
+            	  	var signedUrl = config.contentService + response.data.playlist;
+            	  	return getFeed(signedUrl);
             	  });
      }
 
