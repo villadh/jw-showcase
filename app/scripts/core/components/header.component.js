@@ -47,7 +47,21 @@
     HeaderController.$inject = ['config'];
     function HeaderController (config) {
 
-        this.config = config;
+        var vm = this;
+        vm.config = config;
+        vm.loggedIn = false;
+
+        vm.loginButtonClickHandler   = loginButtonClickHandler;
+        vm.logoutButtonClickHandler  = logoutButtonClickHandler;
+        
+        function loginButtonClickHandler(){
+        	window.alert(vm.loggedIn);
+        	//this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        };
+        function logoutButtonClickHandler(){
+        	window.alert(vm.loggedIn);
+        	//this.afAuth.auth.signOut();
+        };
     }
 
 }());
