@@ -6,16 +6,7 @@
     <div class="jw-header-main">
       <img class="jw-header-logo" ui-sref="root.dashboard()" ng-src="{{ ::vm.config.assets.banner }}" alt="logo"/>
     </div>
-    <div class="jw-header-login">
-      <div ng-if="vm.loggedIn">
-      <h1>Hello {{ vm.afAuth.authState.displayName }}!</h1>
-      <button ng-click="vm.logoutButtonClickHandler()">Logout</button>
-    </div>
-    <div ng-if="!vm.loggedIn">
-      <p>Please login.</p>
-      <button ng-click="vm.loginButtonClickHandler()">Login with Google</button>
-    </div>
-    </div>
+    <jw-auth></jw-auth>
     <div class="jw-header-nav">
       <jw-search ng-if="vm.config.searchPlaylist"></jw-search>
     </div>

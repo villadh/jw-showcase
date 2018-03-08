@@ -79,9 +79,8 @@
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
-<!-- 
-<script src="https://fb-live-400ad.firebaseapp.com/config.js"></script>
--->
+<script src="./firebase.config.js"></script>
+
 <!-- AngularFire -->
 <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
@@ -113,6 +112,7 @@
 <script src="app/scripts/core/controllers/root.controller.js"></script>
 <script src="app/scripts/core/controllers/share.controller.js"></script>
 
+<script src="app/scripts/core/components/auth.component.js"></script>
 <script src="app/scripts/core/components/buttonBack.component.js"></script>
 <script src="app/scripts/core/components/buttonMenu.component.js"></script>
 <script src="app/scripts/core/components/footer.component.js"></script>
@@ -205,13 +205,6 @@
 
 <script>
     window.configLocation = './config.json';
-    firebaseConfig = {
-        	"apiKey": "AIzaSyAOmSc6eJFTAzIN_eET4dTPcgA3haNta7s",
-        	"authDomain": "fb-live-400ad.firebaseapp.com",
-        	"databaseURL": "https://fb-live-400ad.firebaseio.com",
-        	"storageBucket": "fb-live-400ad.appspot.com"
-        };
-    firebase.initializeApp(firebaseConfig);
 </script>
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
