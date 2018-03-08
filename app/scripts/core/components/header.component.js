@@ -44,10 +44,12 @@
      *
      * @requires jwShowcase.config
      */
-    HeaderController.$inject = ['config'];
-    function HeaderController (config) {
+    HeaderController.$inject = ['config', '$window', "$firebaseAuth"];
+    function HeaderController (config, $window, $firebaseAuth) {
 
         var vm = this;
+        var auth = $firebaseAuth();
+        
         vm.config = config;
         vm.loggedIn = false;
 
@@ -55,13 +57,17 @@
         vm.logoutButtonClickHandler  = logoutButtonClickHandler;
         
         function loginButtonClickHandler(){
-        	window.alert(vm.loggedIn);
-        	//this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        };
+        	//$window.alert(vm.loggedIn);
+        	auth.$signInWithPopup("google").then(function(firebaseUser) {
+    		  console.log("Signed in as:", firebaseUser);
+    		  }).catch(function(error) {
+    		  	console.log("Authentication failed:", error);
+    		  });
+        }
         function logoutButtonClickHandler(){
-        	window.alert(vm.loggedIn);
+        	$window.alert(vm.loggedIn);
         	//this.afAuth.auth.signOut();
-        };
+        }
     }
 
 }());

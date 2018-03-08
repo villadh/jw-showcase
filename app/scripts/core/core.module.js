@@ -24,7 +24,7 @@
      * Application's core module
      */
     angular
-        .module('jwShowcase.core', [])
+        .module('jwShowcase.core', ['firebase'])
         .run(run)
         .config(config);
 
@@ -83,13 +83,14 @@
             }]);
     }
 
-    run.$inject = ['$document', 'history', 'platform'];
+    run.$inject = ['$document', 'history', 'platform', '$window'];
 
-    function run ($document, history, platform) {
+    function run ($document, history, platform, $window) {
 
         // initialize history and platform services.
         history.attach();
         platform.prepare();
+       // firebase.initializeApp($window.firebase);
 
         // listen for keyup events and enable the focus ring when using the tab key.
         $document.on('keyup', function (evt) {

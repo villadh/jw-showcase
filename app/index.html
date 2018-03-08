@@ -73,10 +73,17 @@
 <div class="jw-offline-message">
   You appear to be offline. <a ng-click="rootVm.reconnect()">Retry</a>
 </div>
-
 <!-- build:js(.) scripts/vendor.1.js -->
 <script src="node_modules/angular/angular.js"></script>
 <!-- endbuild -->
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+<!-- 
+<script src="https://fb-live-400ad.firebaseapp.com/config.js"></script>
+-->
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
 <!-- build:js(.) scripts/vendor.2.js -->
 <script src="node_modules/angular-aria/angular-aria.js"></script>
@@ -89,6 +96,7 @@
 <script src="node_modules/ua-parser-js/src/ua-parser.js"></script>
 <script src="node_modules/add-to-homescreen/dist/addtohomescreen.min.js"></script>
 <script src="node_modules/iscroll/build/iscroll.js"></script>
+
 <!-- endbuild -->
 
 <!-- build:js(.) scripts/application.js -->
@@ -197,6 +205,13 @@
 
 <script>
     window.configLocation = './config.json';
+    firebaseConfig = {
+        	"apiKey": "AIzaSyAOmSc6eJFTAzIN_eET4dTPcgA3haNta7s",
+        	"authDomain": "fb-live-400ad.firebaseapp.com",
+        	"databaseURL": "https://fb-live-400ad.firebaseio.com",
+        	"storageBucket": "fb-live-400ad.appspot.com"
+        };
+    firebase.initializeApp(firebaseConfig);
 </script>
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
