@@ -30,7 +30,8 @@
             'jwShowcase.settings',
             'jwShowcase.tag',
             'jwShowcase.updateBrowser',
-            'jwShowcase.video'
+            'jwShowcase.video',
+            'jwShowcase.auth'
         ])
         .value('config', {
             contentService: 'https://content.jwplatform.com',

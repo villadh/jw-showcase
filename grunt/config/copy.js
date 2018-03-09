@@ -9,6 +9,7 @@ module.exports = {
                 '*.{ico,png,txt}',
                 '.htaccess',
                 'config.json',
+                'firebase.config.js',
                 '*.html',
                 'fonts/{,*/}*',
                 'images/*.{jpg,gif,png,svg}',
