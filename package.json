@@ -73,7 +73,6 @@
     "scss-lint": "scss-lint -c .scss-lint.yml app/styles"
   },
   "pre-commit": [
-    "jshint",
-    "scss-lint"
+    "jshint"
   ]
 }

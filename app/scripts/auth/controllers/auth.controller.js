@@ -16,11 +16,9 @@
      */
     angular
         .module('jwShowcase.auth')
-        .component('jwAuth', {
-            controllerAs: 'vm',
-            controller:   authController,
-            templateUrl:  'views/core/auth.html',
-        });
+        .controller('authController', authController)
+//            templateUrl:  'views/core/auth.html'
+        ;
 
     /**
      * @ngdoc controller
@@ -29,9 +27,9 @@
      * @requires jwShowcase.config
      * @requires angularfire
      */
-    authController.$inject = ['$scope', 'config', '$window', '$firebaseAuth'];
+    authController.$inject = ['config', '$window', '$firebaseAuth'];
 
-    function authController ($scope, config, $window, $firebaseAuth) {
+    function authController (config, $window, $firebaseAuth) {
 
         var vm = this;
         var auth = $firebaseAuth();
