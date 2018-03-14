@@ -18,48 +18,36 @@
         .module('jwShowcase.auth')
         .component('jwAuth', {
             controllerAs: 'vm',
-            controller:   authController,
-            templateUrl:  'views/core/auth.html',
+            controller:  authController ,
+            templateUrl:  'views/auth/auth.html',
         });
 
     /**
      * @ngdoc controller
-     * @name jwShowcase.core.authController
+     * @name jwShowcase.auth.authController
      *
+     * @requires jwShowcase.$scope
      * @requires jwShowcase.config
      * @requires angularfire
      */
-    authController.$inject = ['$scope', 'config', '$window', '$firebaseAuth'];
 
-    function authController ($scope, config, $window, $firebaseAuth) {
 
-        var vm = this;
-        var auth = $firebaseAuth();
-        
-        vm.config = config;
-        vm.firebaseUser = null;
-        vm.loggedIn = false;
+    authController.$inject = ['$scope', 'config', 'firebaseAuthConsumer'];
+    function authController ($scope, config, firebaseAuthConsumer) {
+    	var vm = this;
+    	vm.config = config;
 
-        vm.loginButtonClickHandler   = loginButtonClickHandler;
-        vm.logoutButtonClickHandler  = logoutButtonClickHandler;
-        
-        function loginButtonClickHandler(){
-        	auth.$signInWithPopup('google').then(function(firebaseUser) {
-    		  }).catch(function(error) {
-    		  	console.log('Authentication failed:', error);
-    		  });
-        }
-        function logoutButtonClickHandler(){
-        	vm.loggedIn = false;
-        	auth.$signOut();
-        }
-        
-        // any time auth state changes, add the user data to scope
-    	auth.$onAuthStateChanged(function(firebaseUser) {
-      		vm.firebaseUser = firebaseUser;
-      		if(null !== firebaseUser){
-      		  vm.loggedIn = true;
-      		}
-    	});
+        vm.currentUser = firebaseAuthConsumer.getCurrentUser();
+
+        $scope.$on('event:authStateChange', function(event, data){
+            vm.currentUser = data;
+        });
+
+        vm.loginButtonClickHandler   = firebaseAuthConsumer.loginButtonClickHandler;
+        vm.providerClickHandler = firebaseAuthConsumer.providerClickHandler;
+        vm.logoutButtonClickHandler  = firebaseAuthConsumer.logoutButtonClickHandler;
+        vm.getCurrentUser = firebaseAuthConsumer.getCurrentUser;
+        vm.isAuthenticated = firebaseAuthConsumer.isAuthenticated;
     }
+
 }());

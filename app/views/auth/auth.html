@@ -1,0 +1,44 @@
+<div class="jw-header-login">
+  <div ng-if="vm.isAuthenticated()">
+    <span class="jw-button-label ng-scope">Hello {{ vm.currentUser.displayName }}</span>
+    <button ng-click="vm.logoutButtonClickHandler()">Logout</button>
+    <div class="jw-sidebar-group">
+      <jw-button
+          class="jw-button-block jw-button-default jw-button-sidebar-right"
+          style="text-align: right;"
+          tabindex="0"
+          ui-sref="root.settings"
+          ui-sref-active="active"
+          ng-click="vm.itemClickHandler($event)">
+            <i class="jwy-icon jwy-icon-settings" style="right:auto;"></i>
+            <span class="jw-button-label">Profile</span>
+        </jw-button>
+    </div>
+  </div>
+  <div ng-if="!vm.isAuthenticated()">
+    <!-- <authLogin></authLogin>  -->
+    <form name="loginForm" 
+      ng-submit="vm.loginButtonClickHandler(vm.credentials)" novalidate>
+      <label for="email" class="jw-button-block jw-button-default jw-button-sidebar-right">E-mail:</label>
+      <input type="text" id="email" placeholder="e-mail address"
+         ng-model="vm.credentials.email">
+      <label for="password" class="jw-button-block jw-button-default jw-button-sidebar-right">Password:</label>
+      <input type="password" id="password" placeholder="password"
+         ng-model="vm.credentials.password">
+      <button type="submit">Login</button>
+    </form>
+    <button ng-click="vm.providerClickHandler('google')" ng-if="!vm.config.options.authenticationProviders">Login with Google</button>
+    <div class="jw-sidebar-group" ng-if="vm.config.options.authenticationProviders">
+      <jw-button
+          class="jw-button-block jw-button-default jw-button-sidebar-right"
+          style="text-align: right;"
+          ng-repeat="provider in vm.config.options.authenticationProviders"
+          ui-sref-active="active"
+          tabindex="0"
+          ng-click="vm.providerClickHandler(provider)">
+        <span class="jw-button-label">Sign in with {{ provider }}</span>
+        <i class="jwy-icon jwy-icon-angle-left" style="right:auto;"></i>
+      </jw-button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<style>
+.sidebar-right-closed{
+	transform: translateX(100%);
+    visibility: hidden;
+}
+.sidebar-right-opened{
+	transform: translateX(0);
+    visibility: visible;
+}
+</style>
+<div class="jw-sidebar jw-sidebar-right sidebar-right-closed" style="right: 0">
+  <jw-auth-header-menu></jw-auth-header-menu>
+  <div class="jw-sidebar-content">
+    <jw-auth></jw-auth>
+  </div>
+</div>

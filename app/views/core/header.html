@@ -6,9 +6,12 @@
     <div class="jw-header-main">
       <img class="jw-header-logo" ui-sref="root.dashboard()" ng-src="{{ ::vm.config.assets.banner }}" alt="logo"/>
     </div>
-    <jw-auth ng-if="vm.config.options.useAuthentication"></jw-auth>
     <div class="jw-header-nav">
       <jw-search ng-if="vm.config.searchPlaylist"></jw-search>
+    </div>
+    <!-- HV modified for auth feature -->
+    <div class="jw-header-nav" ng-if="vm.config.options.useAuthentication">
+      <jw-button-auth-menu></jw-button-auth-menu>
     </div>
   </div>
 </div>
