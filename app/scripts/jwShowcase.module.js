@@ -22,16 +22,17 @@
      */
     angular
         .module('jwShowcase', [
+            'firebase',
             'jwShowcase.core',
             'jwShowcase.error',
             'jwShowcase.dashboard',
             'jwShowcase.feed',
+            'jwShowcase.login',
             'jwShowcase.search',
             'jwShowcase.settings',
             'jwShowcase.tag',
             'jwShowcase.updateBrowser',
-            'jwShowcase.video',
-            'jwShowcase.auth'
+            'jwShowcase.video'
         ])
         .value('config', {
             contentService: 'https://content.jwplatform.com',

@@ -29,9 +29,9 @@
      * @requires $q
      * @requires jwShowcase.config
      */
-    apiService.$inject = ['$http', '$q', 'config', 'utils'];
+    apiService.$inject = ['$http', '$q', 'config', 'utils', 'auth'];
 
-    function apiService ($http, $q, config, utils) {
+    function apiService ($http, $q, config, utils, auth) {
 
         /**
          * @ngdoc method
@@ -51,6 +51,7 @@
             if (!angular.isString(mediaId) || mediaId === '') {
                 return $q.reject(new Error('mediaId is not given or not a string'));
             }
+
             return getItem(config.contentService + '/v2/media/' + mediaId);
         };
 
@@ -72,11 +73,8 @@
             if (!angular.isString(feedId) || feedId === '') {
                 return $q.reject(new Error('feedId is not given or not a string'));
             }
-		// check if url signing is required HV added 2/16/2018
-            if(config.options.useSigning) {
-            	return getSignedUrl({playlist:feedId});
-            } 
-            return getFeed(config.contentService + '/v2/playlists/' + feedId);
+
+            return getFeed(feedId);
         };
 
         /**
@@ -104,9 +102,18 @@
                 return $q.reject(new Error('search phrase is not given or not a string'));
             }
 
+            phrase = encodeURIComponent(phrase);
+            
+            if (config.options.firebase && config.options.useSigning) {
+                return this.getSignedFeed([{id: searchPlaylist, query: {'search': phrase}}])
+                    .then(function(signed) {
+                        return getFeed(signed[0]);
+                    });
+            }
+
             var url = config.contentService + '/v2/playlists/' + searchPlaylist;
 
-            return getFeed(url + '?search=' + encodeURIComponent(phrase));
+            return getFeed(url + '?search=' + phrase);
 
         };
 
@@ -206,8 +213,14 @@
                 return $q.reject(new Error('media id is not given or not a string'));
             }
 
-            return getFeed(config.contentService + '/v2/playlists/' + recommendationsPlaylist +
-                '?related_media_id=' + mediaId);
+            if (config.options.firebase && config.options.useSigning) {
+                return this.getSignedFeed([{id: recommendationsPlaylist, query: {'related_media_id': mediaId}}])
+                    .then(function(signed) {
+                        return getFeed(signed[0]);
+                    });
+            }
+
+            return getFeed('/v2/playlists/' + recommendationsPlaylist, {'related_media_id': mediaId});
         };
 
         /**
@@ -251,6 +264,7 @@
          * @returns {Promise}
          */
         function getItem (url) {
+
             return $http.get(url)
                 .then(function (response) {
                     return response.data;
@@ -267,29 +281,29 @@
                     return $q.reject('Failed to get item');
                 });
         }
+
         /**
-         * Get signed URL from firebase for given playlist id .
-         * HV added 2/16/2018
+         * Sign the given URL with authentication token
          *
-         * @param {data} userToken, playlist id
+         * @param {string} url
          * @returns {Promise}
          */
-        function getSignedUrl (data) {
-        	if('undefined' === typeof data.userToken){
-        		data.userToken = 'placeholder';
-        	}
-        	
-        	var req = {
-        		method: 'POST',
-        		url: config.options.firebase.functions + 'token',
-            	data: data
-            };
-            	return $http(req)
-            	  .then(function(response){
-            	  	var signedUrl = config.contentService + response.data.playlist;
-            	  	return getFeed(signedUrl);
-            	  });
-     }
+        this.getSignedFeed = getSignedFeed;
+
+        function getSignedFeed(playlist) {
+            return auth.getToken()
+                .then(function(token) {
+                    return $http({
+                        method : 'POST',
+                        url    : config.options.firebase.functions + '/token',
+                        data   : {userToken: token, playlist: playlist},
+                        headers: {'Content-Type': 'application/json'}
+                    });
+                })
+                .then(function(result) {
+                    return result.data.playlist;
+                });
+        }
 
         /**
          * Get feed from the given URL.
@@ -297,10 +311,12 @@
          * @param {string} url
          * @returns {Promise}
          */
-        function getFeed (url) {
+        function getFeed (feedId) {
+            var url = config.contentService + feedId;
 
             return $http.get(url)
-                .then(getFeedCompleted, getFeedFailed);
+                .then(getFeedCompleted)
+                .catch(getFeedFailed);
 
             function getFeedCompleted (response) {
 
