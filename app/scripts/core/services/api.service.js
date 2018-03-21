@@ -29,8 +29,8 @@
      * @requires $q
      * @requires jwShowcase.config
      */
+// 3/18/2018 HV edited
     apiService.$inject = ['$http', '$q', 'config', 'utils', 'auth'];
-
     function apiService ($http, $q, config, utils, auth) {
 
         /**
@@ -74,7 +74,7 @@
                 return $q.reject(new Error('feedId is not given or not a string'));
             }
 
-            return getFeed(feedId);
+            return getFeed(config.contentService + '/v2/playlists/' + feedId);
         };
 
         /**
@@ -102,8 +102,7 @@
                 return $q.reject(new Error('search phrase is not given or not a string'));
             }
 
-            phrase = encodeURIComponent(phrase);
-            
+// 3/18/2018 HV edited
             if (config.options.firebase && config.options.useSigning) {
                 return this.getSignedFeed([{id: searchPlaylist, query: {'search': phrase}}])
                     .then(function(signed) {
@@ -113,7 +112,7 @@
 
             var url = config.contentService + '/v2/playlists/' + searchPlaylist;
 
-            return getFeed(url + '?search=' + phrase);
+            return getFeed(url + '?search=' + encodeURIComponent(phrase));
 
         };
 
@@ -213,6 +212,7 @@
                 return $q.reject(new Error('media id is not given or not a string'));
             }
 
+// 3/18/2018 HV edited
             if (config.options.firebase && config.options.useSigning) {
                 return this.getSignedFeed([{id: recommendationsPlaylist, query: {'related_media_id': mediaId}}])
                     .then(function(signed) {
@@ -220,7 +220,8 @@
                     });
             }
 
-            return getFeed('/v2/playlists/' + recommendationsPlaylist, {'related_media_id': mediaId});
+            return getFeed(config.contentService + '/v2/playlists/' + recommendationsPlaylist +
+                '?related_media_id=' + mediaId);
         };
 
         /**
@@ -282,8 +283,9 @@
                 });
         }
 
+// 3/18/2018 HV added
         /**
-         * Sign the given URL with authentication token
+         * Get token authenticated feed from the given URL.
          *
          * @param {string} url
          * @returns {Promise}
@@ -311,12 +313,10 @@
          * @param {string} url
          * @returns {Promise}
          */
-        function getFeed (feedId) {
-            var url = config.contentService + feedId;
+        function getFeed (url) {
 
             return $http.get(url)
-                .then(getFeedCompleted)
-                .catch(getFeedFailed);
+                .then(getFeedCompleted, getFeedFailed);
 
             function getFeedCompleted (response) {
 

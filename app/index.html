@@ -73,13 +73,14 @@
 <div class="jw-offline-message">
   You appear to be offline. <a ng-click="rootVm.reconnect()">Retry</a>
 </div>
+
 <!-- build:js(.) scripts/vendor.1.js -->
 <script src="node_modules/angular/angular.js"></script>
 <!-- endbuild -->
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
-<script src="./firebase.config.js"></script>
+<!-- <script src="./firebase.config.js"></script> -->
 
 <!-- AngularFire -->
 <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
@@ -95,7 +96,6 @@
 <script src="node_modules/ua-parser-js/src/ua-parser.js"></script>
 <script src="node_modules/add-to-homescreen/dist/addtohomescreen.min.js"></script>
 <script src="node_modules/iscroll/build/iscroll.js"></script>
-
 <!-- endbuild -->
 
 <!-- build:js(.) scripts/application.js -->
@@ -106,11 +106,16 @@
 <script src="app/scripts/core/core.module.js"></script>
 <script src="app/scripts/core/animations/expand.animation.js"></script>
 
+<script src="app/scripts/core/controllers/accountInfo.controller.js"></script>
+<script src="app/scripts/core/controllers/alert.controller.js"></script>
 <script src="app/scripts/core/controllers/cardMenu.controller.js"></script>
 <script src="app/scripts/core/controllers/cookies.controller.js"></script>
 <script src="app/scripts/core/controllers/confirm.controller.js"></script>
+<script src="app/scripts/core/controllers/forgotPassword.controller.js"></script>
+<script src="app/scripts/core/controllers/login.controller.js"></script>
 <script src="app/scripts/core/controllers/root.controller.js"></script>
 <script src="app/scripts/core/controllers/share.controller.js"></script>
+<script src="app/scripts/core/controllers/signup.controller.js"></script>
 
 <script src="app/scripts/core/components/buttonBack.component.js"></script>
 <script src="app/scripts/core/components/buttonMenu.component.js"></script>
@@ -122,6 +127,7 @@
 <script src="app/scripts/core/components/sidebar.component.js"></script>
 <script src="app/scripts/core/components/sidebarLayout.component.js"></script>
 <script src="app/scripts/core/components/toolbar.component.js"></script>
+<script src="app/scripts/core/components/userBadge.component.js"></script>
 
 <script src="app/scripts/core/directives/adSlot.directive.js"></script>
 <script src="app/scripts/core/directives/button.directive.js"></script>
@@ -132,17 +138,23 @@
 <script src="app/scripts/core/directives/click.directive.js"></script>
 <script src="app/scripts/core/directives/cardPoster.directive.js"></script>
 <script src="app/scripts/core/directives/collapsibleText.directive.js"></script>
+<script src="app/scripts/core/directives/compareTo.directive.js"></script>
+<script src="app/scripts/core/directives/dropdown.directive.js"></script>
 <script src="app/scripts/core/directives/feedTitle.directive.js"></script>
+<script src="app/scripts/core/directives/floatingLabel.directive.js"></script>
 <script src="app/scripts/core/directives/markdown.directive.js"></script>
 <script src="app/scripts/core/directives/scroll.directive.js"></script>
 <script src="app/scripts/core/directives/lazyLoad.directive.js"></script>
 <script src="app/scripts/core/directives/player.directive.js"></script>
+<script src="app/scripts/core/directives/restrictedDomain.directive.js"></script>
 <script src="app/scripts/core/directives/screenSize.directive.js"></script>
 <script src="app/scripts/core/directives/toggle.directive.js"></script>
 <script src="app/scripts/core/directives/view.directive.js"></script>
 
+<script src="app/scripts/core/filters/capitalize.filter.js"></script>
 <script src="app/scripts/core/filters/videoDuration.filter.js"></script>
 
+<script src="app/scripts/core/services/auth.service.js"></script>
 <script src="app/scripts/core/services/api.service.js"></script>
 <script src="app/scripts/core/services/apiConsumer.service.js"></script>
 <script src="app/scripts/core/services/appStore.service.js"></script>
@@ -163,7 +175,6 @@
 <script src="app/scripts/core/services/seo.service.js"></script>
 <script src="app/scripts/core/services/session.service.js"></script>
 <script src="app/scripts/core/services/sidebar.service.js"></script>
-<script src="app/scripts/core/services/sidebarRight.service.js"></script>
 <script src="app/scripts/core/services/thumbstrip.service.js"></script>
 <script src="app/scripts/core/services/watchlist.service.js"></script>
 <script src="app/scripts/core/services/watchProgress.service.js"></script>
@@ -181,6 +192,8 @@
 
 <script src="app/scripts/feed/feed.module.js"></script>
 <script src="app/scripts/feed/controllers/feed.controller.js"></script>
+
+<script src="app/scripts/login/login.module.js"></script>
 
 <script src="app/scripts/search/search.module.js"></script>
 <script src="app/scripts/search/controllers/search.controller.js"></script>
@@ -201,16 +214,6 @@
 <script src="app/scripts/video/components/videoDetailsTitle.component.js"></script>
 <script src="app/scripts/video/components/videoDetailsDescription.component.js"></script>
 <script src="app/scripts/video/components/videoDetailsShare.component.js"></script>
-
-<script src="app/scripts/auth/auth.module.js"></script>
-<script src="app/scripts/auth/controllers/auth.controller.js"></script>
-<script src="app/scripts/auth/components/auth.component.js"></script>
-<script src="app/scripts/auth/components/authHeaderMenu.component.js"></script>
-<script src="app/scripts/auth/components/authSidebar.component.js"></script>
-<script src="app/scripts/auth/components/buttonAuthMenu.component.js"></script>
-<script src="app/scripts/auth/components/sidebarRightLayout.component.js"></script>
-<script src="app/scripts/auth/services/firebaseAuthConsumer.service.js"></script>
-
 <!-- endbuild -->
 
 <script>

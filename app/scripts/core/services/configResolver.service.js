@@ -34,15 +34,16 @@
      * @requires $http
      * @required $q
      */
-    configResolverService.$inject = ['$http', '$q'];
-
-    function configResolverService ($http, $q) {
+    configResolverService.$inject = ['$http', '$q', 'config'];
+    function configResolverService ($http, $q, config) {
 
         var isDefined     = angular.isDefined,
             isArray       = angular.isArray,
             isString      = angular.isString,
             configPromise = null;
 
+        var firebaseInitialized = false;
+        
         this.getConfig = getConfig;
 
         ////////////////////////
@@ -66,7 +67,34 @@
                     .then(getConfigComplete, getConfigFailed);
             }
 
-            return configPromise;
+            return configPromise
+                           .then(function(resolved) {
+                    copyValuesRecursive(config, resolved);
+
+                    config.content.forEach(function (target) {
+                      target.signable = true;
+                    });
+
+                    applyConfigDefaults(config);
+                })
+                .then(function () {
+                    if (firebaseInitialized) {
+                        return;
+                    }
+
+                    firebaseInitialized = true;
+
+                    if (config.options.useSigning || config.options.useAuthentication) {
+                        if (!config.options.firebase) {
+                            throw new Error('Missing firebase options.');
+                        }
+
+                        firebase.initializeApp(config.options.firebase);
+                    } else {
+                        config.options.firebase = false;
+                    }
+                });
+            
         }
 
         /**
@@ -292,7 +320,7 @@
                 }
             });
         }
-
+    }
         /**
          * Returns true if value is defined and not null
          * @param {*} value
@@ -301,6 +329,23 @@
         function isSet (value) {
             return angular.isDefined(value) && value !== null;
         }
-    }
+        
+        /**
+         * Merge values that are defined and not null
+         * @param {Object} destination
+         * @param {Object} source
+         */
+        function copyValuesRecursive(destination, source) {
 
+            angular.forEach(source, function (value, key) {
+
+                if (angular.isObject(value) && angular.isObject(destination[key])) {
+                    return copyValuesRecursive(destination[key], value);
+                }
+
+                if (isSet(value)) {
+                    destination[key] = value;
+                }
+            });
+        }
 }());
