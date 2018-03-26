@@ -43,13 +43,17 @@
 
         vm.isPage = popupInstance.isPage();
 
-        config.options.authenticationProviders.forEach(function (provider) {
-            if (provider === 'local') {
-                vm.localAuth = true;
-            } else {
-                vm.providers.push(provider);
-            }
-        });
+		if(angular.isArray(config.options.authenticationProviders)){
+        	config.options.authenticationProviders.forEach(function (provider) {
+            	if (provider === 'local') {
+                	vm.localAuth = true;
+            	} else {
+                	vm.providers.push(provider);
+            	}
+        	});
+		} else {
+			vm.localAuth = true;
+		}
 
         function logInWithProvider(provider) {
             auth.firebaseAuth.$signInWithPopup(provider).then(function (result) {
@@ -76,6 +80,7 @@
                 signin = auth.firebaseAuth.$signInWithEmailAndPassword(email, password);
             } catch (error) {
                 signin = Promise.reject(invalidCredentials);
+                console.log(error);
             }
 
             return signin.then(function (result) {
