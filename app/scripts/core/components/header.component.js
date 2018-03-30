@@ -47,21 +47,20 @@
      */
     HeaderController.$inject = ['config', '$rootScope'];
     function HeaderController (config, $rootScope) {
-        var self = this;
+        var vm = this;
 
-        self.userLoggedIn = false;
-        self.config = config;
+        vm.userLoggedIn = false;
+        vm.config = config;
 
         if (config.options.useAuthentication) {
-/*
             $rootScope.auth.hasIdentity().then(function (isUserLoggedIn) {
-                self.userLoggedIn = !config.options.authenticationRequired || isUserLoggedIn;
-            });
-*/
-            $rootScope.auth.$onAuthStateChanged(function (firebaseUser) {
-                self.userLoggedIn = !config.options.authenticationRequired || !!firebaseUser;
+                vm.userLoggedIn = !config.options.authenticationRequired || isUserLoggedIn;
             });
 
+			console.log('listening for onAuthStateChanged');
+            $rootScope.$on('authStateChanged', function (firebaseUser) {
+                vm.userLoggedIn = !config.options.authenticationRequired || Boolean(firebaseUser);
+            });
         }
     }
 }());

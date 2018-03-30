@@ -27,7 +27,7 @@
             return;
         }
 */
-		console.log('use authentication');
+
         var defer = $q.defer();
 
 			$rootScope.$on('firebase.initialized', function(){

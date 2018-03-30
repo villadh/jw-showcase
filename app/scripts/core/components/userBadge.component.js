@@ -38,8 +38,8 @@
             templateUrl : 'views/core/userBadge.html'
         });
 
-    AuthController.$inject = ['$rootScope', 'config', 'popup', '$state'];
-    function AuthController($rootScope, config, popup, $state) {
+    AuthController.$inject = ['$rootScope', '$scope', 'config', 'popup', '$state'];
+    function AuthController($rootScope, $scope, config, popup, $state) {
 
         // Is triggered when useAuthentication in config is false
         if(!config.options.useAuthentication) {
@@ -96,9 +96,11 @@
             vm.dropdownOpen = false;
             $rootScope.auth.logout();
         }
-
+			console.log('listening for onAuthStateChanged');
+            	
         $rootScope.auth.$onAuthStateChanged(function(firebaseUser) {
             vm.identity = firebaseUser ? firebaseUser : null;
+            $scope.$parent.vm.userLoggedIn = !config.options.authenticationRequired || Boolean(firebaseUser);
         });
     }
 }());
