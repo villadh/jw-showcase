@@ -26,8 +26,8 @@
      *
      * @requires popupInstance
      */
-    LoginController.$inject = ['$rootScope', 'popupInstance', 'config', 'popup', '$window', '$timeout'];
-    function LoginController ($rootScope, popupInstance, config, popup, $window, $timeout) {
+    LoginController.$inject = ['$rootScope', 'popupInstance', 'config', 'popup', '$window', '$timeout', '$state'];
+    function LoginController ($rootScope, popupInstance, config, popup, $window, $timeout, $state) {
         var vm = this;
 
         vm.providers = [];
@@ -57,6 +57,7 @@
 
         function logInWithProvider(provider) {
             $rootScope.auth.$signInWithPopup(provider).then(function (result) {
+            	$state.go('root.dashboard');
                 popupInstance.close(true);
 
                 if ($rootScope.auth.isEmailDomainAllowed(result.user.email)) {
@@ -84,6 +85,7 @@
             }
 
             return signin.then(function (result) {
+            	$state.go('root.dashboard');
                 popupInstance.close(true);
 
                 if (!result.emailVerified) {
@@ -91,6 +93,8 @@
                     $rootScope.auth.$signOut();
                 } else {
                     $window.location.reload();
+                    
+
                 }
             }).catch(function (err) {
                 $timeout(function () {

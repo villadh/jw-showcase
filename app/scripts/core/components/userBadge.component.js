@@ -68,15 +68,6 @@
                 vm.dropdownOpen = !vm.dropdownOpen;
             } else {
             	$state.go('root.login');
-/*
-                popup.show({
-                    controller: 'LoginController as vm',
-                    templateUrl: 'views/core/popups/login.html',
-                    resolve: {
-                        config: config
-                    }
-                });
-*/
             }
         }
 
@@ -96,7 +87,6 @@
             vm.dropdownOpen = false;
             $rootScope.auth.logout();
         }
-			console.log('listening for onAuthStateChanged');
             	
         $rootScope.auth.$onAuthStateChanged(function(firebaseUser) {
             vm.identity = firebaseUser ? firebaseUser : null;

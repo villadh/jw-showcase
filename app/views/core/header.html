@@ -9,8 +9,8 @@
     <div class="jw-header-nav jw-header-nav-right">
         <jw-search ng-show="vm.config.searchPlaylist && (!vm.config.options.useAuthentication || vm.userLoggedIn)"></jw-search>
     </div>
-    <div class="jw-header-nav jw-header-nav-right">
-        <jw-user-badge ng-if="vm.config.options.useAuthentication"></jw-user-badge>
+    <div class="jw-header-nav jw-header-nav-right" ng-if="vm.config.options.useAuthentication">
+        <jw-user-badge></jw-user-badge>
     </div>
   </div>
 </div>

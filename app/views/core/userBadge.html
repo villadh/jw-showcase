@@ -1,7 +1,7 @@
 <div class="jw-user-badge">
     <jw-button class="jw-button-default jw-button-user-badge" ng-click="vm.userBadgeClickHandler()" tabindex="0">
         <span class="jw-button-label"></span> <i class="jwy-icon jwy-icon-user"></i>
-        <span ng-if="vm.identity" class="jw-chevron">&#8964;</span>
+        <span ng-show="vm.identity" class="jw-chevron">&#8964;</span>
     </jw-button>
 
     <jw-dropdown open="vm.dropdownOpen">
@@ -11,7 +11,7 @@
 
             <div class="jw-user-info-dropdown-header jw-user-info-dropdown-divider-bottom">
                 <div class="jw-user-info-dropdown-left-col">
-                    <img ng-src="{{vm.identity.photoURL}}" class="jw-user-info-dropdown-userbadge" style="display: block;">
+                    <img ng-src="{{vm.identity.photoURL}}" class="jw-user-info-dropdown-userbadge" style="display: block;width: 32px;">
                 </div>
                 <div class="jw-user-info-dropdown-right-col">
                     <div class="jw-user-info-dropdown-text-wrapper">
@@ -27,7 +27,7 @@
             <a href="" class="jw-user-info-dropdown-button jw-user-info-dropdown-info jw-user-info-dropdown-divider-bottom" ng-click="vm.showAccountInfo()">
                 Account Info
             </a>
-            <a href="" class="jw-user-info-dropdown-button jw-user-info-dropdown-log-out" ng-click="vm.logout()">
+            <a href="" class="jw-user-info-dropdown-button jw-user-info-dropdown-log-out" ng-click="vm.logout()" ng-show="vm.identity">
                 Log out
             </a>
         </div>
