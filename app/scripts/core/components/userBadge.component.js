@@ -38,12 +38,14 @@
             templateUrl : 'views/core/userBadge.html'
         });
 
-    AuthController.$inject = ['auth', 'config', 'popup'];
-    function AuthController(auth, config, popup) {
+    AuthController.$inject = ['$rootScope', 'config', 'popup', '$state'];
+    function AuthController($rootScope, config, popup, $state) {
 
         // Is triggered when useAuthentication in config is false
         if(!config.options.useAuthentication) {
             return;
+        } else {
+        	console.info($rootScope.auth);
         }
 
         var vm = this;
@@ -53,18 +55,20 @@
         vm.userBadgeClickHandler = userBadgeClickHandler;
         vm.showAccountInfo = showAccountInfo;
         vm.logout = logout;
-
-        auth.getIdentity().then(function (identity) {
+/*
+        $rootScope.auth.getIdentity().then(function (identity) {
            vm.identity = identity;
         });
+*/
 
-
-        var firebaseAuth = auth.firebaseAuth;
+//        var firebaseAuth = auth.firebaseAuth;
 
         function userBadgeClickHandler (event) {
             if (vm.identity) {
                 vm.dropdownOpen = !vm.dropdownOpen;
             } else {
+            	$state.go('root.login');
+/*
                 popup.show({
                     controller: 'LoginController as vm',
                     templateUrl: 'views/core/popups/login.html',
@@ -72,6 +76,7 @@
                         config: config
                     }
                 });
+*/
             }
         }
 
@@ -89,10 +94,10 @@
 
         function logout() {
             vm.dropdownOpen = false;
-            auth.logout();
+            $rootScope.auth.logout();
         }
 
-        firebaseAuth.$onAuthStateChanged(function(firebaseUser) {
+        $rootScope.auth.$onAuthStateChanged(function(firebaseUser) {
             vm.identity = firebaseUser ? firebaseUser : null;
         });
     }

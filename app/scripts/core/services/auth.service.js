@@ -19,36 +19,51 @@
         .module('jwShowcase.core')
         .service('auth', AuthService);
 
-    AuthService.$inject = ['$firebaseAuth', 'config', '$window', '$rootScope', '$state'];
+    AuthService.$inject = ['$firebaseAuth', 'config', '$window', '$rootScope', '$state', '$q'];
 
-    function AuthService($firebaseAuth, config, $window, $rootScope, $state) {
+    function AuthService($firebaseAuth, config, $window, $rootScope, $state, $q) {
+/*
         if (!config.options.useAuthentication) {
             return;
         }
+*/
+		console.log('use authentication');
+        var defer = $q.defer();
 
-        var auth = $firebaseAuth();
+			$rootScope.$on('firebase.initialized', function(){
+				$rootScope.auth = $firebaseAuth();
+				$rootScope.auth.getIdentity = getIdentity;
+				$rootScope.auth.hasIdentity = hasIdentity;
+				$rootScope.auth.logout = logout;
+				
+				//var firebaseUser = $firebaseAuth().$getAuth();
+				console.info($rootScope.auth);
+				defer.resolve();
+			});
 
-        this.firebaseAuth = auth;
+return defer.Promise;
 
         //Define methods
-        this.getIdentity  = function() {
-            return auth.$waitForSignIn().then(function() {
-                return auth.$getAuth();
-            });
-        };
-
-        this.hasIdentity = function() {
+        function getIdentity() {
+        	if (!$rootScope.auth) {
+        		return $q.resolve();
+        	}
+        	return $firebaseAuth.$waitForSignIn().then(function() {
+        		return $firebaseAuth.$getAuth();
+        	});
+        }
+        function hasIdentity() {
             return this.getIdentity().then(function(identity) {
                 return !!identity;
             });
-        };
+        }
 
-        this.logout = function() {
-            auth.$signOut();
+        function logout() {
+            $firebaseAuth().$signOut();
             $window.location.reload();
-        };
+        }
 
-        this.getToken = function() {
+        function getToken() {
             return this.getIdentity().then(function(identity) {
                 if (!identity) {
                     return null;
@@ -56,9 +71,9 @@
 
                 return identity.getToken();
             });
-        };
+        }
 
-        this.isEmailDomainAllowed = function (email) {
+        function isEmailDomainAllowed(email) {
             if (!config.options.restrictedDomains) {
                 return true;
             }
@@ -76,7 +91,7 @@
             }
 
             return false;
-        };
+        }
 
         this.hasIdentity().then(function (isUserLoggedIn) {
             if (config.options.authenticationRequired && !isUserLoggedIn) {

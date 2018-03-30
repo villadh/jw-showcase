@@ -34,8 +34,8 @@
      * @requires $http
      * @required $q
      */
-    configResolverService.$inject = ['$http', '$q', 'config'];
-    function configResolverService ($http, $q, config) {
+    configResolverService.$inject = ['$http', '$q', 'config', '$rootScope'];
+    function configResolverService ($http, $q, config, $rootScope) {
 
         var isDefined     = angular.isDefined,
             isArray       = angular.isArray,
@@ -90,6 +90,7 @@
                         }
 
                         firebase.initializeApp(config.options.firebase);
+                        $rootScope.$broadcast('firebase.initialized');
                     } else {
                         config.options.firebase = false;
                     }

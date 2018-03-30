@@ -26,8 +26,8 @@
      *
      * @requires popupInstance
      */
-    LoginController.$inject = ['auth', 'popupInstance', 'config', 'popup', '$window', '$timeout'];
-    function LoginController (auth, popupInstance, config, popup, $window, $timeout) {
+    LoginController.$inject = ['$rootScope', 'popupInstance', 'config', 'popup', '$window', '$timeout'];
+    function LoginController ($rootScope, popupInstance, config, popup, $window, $timeout) {
         var vm = this;
 
         vm.providers = [];
@@ -56,14 +56,14 @@
 		}
 
         function logInWithProvider(provider) {
-            auth.firebaseAuth.$signInWithPopup(provider).then(function (result) {
+            $rootScope.auth.$signInWithPopup(provider).then(function (result) {
                 popupInstance.close(true);
 
-                if (auth.isEmailDomainAllowed(result.user.email)) {
+                if ($rootScope.auth.isEmailDomainAllowed(result.user.email)) {
                     $window.location.reload();
                 } else {
                     popup.alert('This email domain is not allowed.');
-                    auth.firebaseAuth.$signOut();
+                    $rootScope.auth.firebaseAuth.$signOut();
                 }
 
             }).catch(function (error) {
@@ -77,7 +77,7 @@
             var signin;
 
             try {
-                signin = auth.firebaseAuth.$signInWithEmailAndPassword(email, password);
+                signin = $rootScope.auth.$signInWithEmailAndPassword(email, password);
             } catch (error) {
                 signin = Promise.reject(invalidCredentials);
                 console.log(error);
@@ -88,7 +88,7 @@
 
                 if (!result.emailVerified) {
                     popup.alert('You have not verified your email address yet.');
-                    auth.firebaseAuth.$signOut();
+                    $rootScope.auth.$signOut();
                 } else {
                     $window.location.reload();
                 }
