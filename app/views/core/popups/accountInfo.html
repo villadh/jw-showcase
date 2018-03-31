@@ -1,8 +1,7 @@
 <div class="jw-popup jw-popup-login jw-popup-account-info">
     <h3 class="jw-popup-title">Account info</h3>
-    <form class="jw-form" name="accountInfoForm" ng-submit="vm.saveUser(vm.password)" novalidate>
-
-        <div class="jw-form-group jw-floating-label-wrapper" ng-if="vm.user.displayName">
+    	<div ng-if="vm.user">
+        <div class="jw-form-group jw-floating-label-wrapper" >
             <p class="jw-form-group-label">
                Name
             </p>
@@ -10,7 +9,24 @@
                 {{vm.user.displayName}}
             </p>
         </div>
-
+        <div class="jw-form-group jw-floating-label-wrapper">
+            <p class="jw-form-group-label">
+               Email
+            </p>
+            <p class="jw-form-group-info">
+                {{vm.user.email}}
+            </p>
+        </div>
+        <div class="jw-form-group jw-floating-label-wrapper">
+            <p class="jw-form-group-label">
+               Signed in using
+            </p>
+            <p class="jw-form-group-info">
+                {{vm.user.providerData['0'].providerId}}
+            </p>
+        </div>
+		</div>
+    <form class="jw-form" name="accountInfoForm" ng-if="!vm.user" ng-submit="vm.saveUser(vm.password)" novalidate>
         <div class="jw-form-group jw-floating-label-wrapper">
             <p class="jw-form-group-label">
                Email

@@ -1,18 +1,26 @@
 <div class="jw-user-badge">
-    <jw-button class="jw-button-default jw-button-user-badge" ng-click="vm.userBadgeClickHandler()" tabindex="0">
-        <span class="jw-button-label"></span> <i class="jwy-icon jwy-icon-user"></i>
-        <span ng-show="vm.identity" class="jw-chevron">&#8964;</span>
+    <jw-button class="jw-button-default jw-button-user-badge" ng-click="vm.userBadgeClickHandler()" tabindex="0" >
+        <span class="jw-button-label" ng-if="!vm.identity">Login</span> <i class="jwy-icon jwy-icon-user"></i>
+        <img 
+                      ng-if="vm.identity"
+                      ng-src="{{vm.identity.photoURL}}"
+                      class="jw-user-info-dropdown-userbadge"
+                      style="display: block;width: 32px;"
+                      alt="{{vm.identity.displayName}}&nbsp;{{vm.identity.email}}"
+                      >
     </jw-button>
-
+</div>
+<div>
     <jw-dropdown open="vm.dropdownOpen">
         <div class="jw-popups-backdrop" ng-click="vm.userBadgeClickHandler()" tabindex="-1"></div>
-        <div class="jw-user-info-dropdown jw-dropdown-content">
+        <div class="jw-user-info-dropdown jw-dropdown-content" style="background: white;padding:1em;">
             <div class="arrow-up"></div>
 
             <div class="jw-user-info-dropdown-header jw-user-info-dropdown-divider-bottom">
                 <div class="jw-user-info-dropdown-left-col">
-                    <img ng-src="{{vm.identity.photoURL}}" class="jw-user-info-dropdown-userbadge" style="display: block;width: 32px;">
+
                 </div>
+
                 <div class="jw-user-info-dropdown-right-col">
                     <div class="jw-user-info-dropdown-text-wrapper">
                         <p class="jw-user-info-dropdown-name">
@@ -24,12 +32,22 @@
                     </div>
                 </div>
             </div>
-            <a href="" class="jw-user-info-dropdown-button jw-user-info-dropdown-info jw-user-info-dropdown-divider-bottom" ng-click="vm.showAccountInfo()">
-                Account Info
-            </a>
-            <a href="" class="jw-user-info-dropdown-button jw-user-info-dropdown-log-out" ng-click="vm.logout()" ng-show="vm.identity">
-                Log out
-            </a>
+			<jw-button
+          		class="jw-button-block jw-button-default"
+          		ng-click="vm.showAccountInfo()"
+          		tabindex="0"
+          		is-disabled=""
+          		ng-click="vm.itemClickHandler($event)">
+        		<i class="jwy-icon jwy-icon-angle-left"></i>
+        		<span class="jw-button-label">Account Info</span>
+      		</jw-button>
+      		<jw-button
+          		class="jw-button-block jw-button-default"
+          		ng-click="vm.logout()"
+          		tabindex="0"
+          		ng-click="vm.itemClickHandler($event)">
+        		<span class="jw-button-label">Log out</span>
+      		</jw-button>
         </div>
     </jw-dropdown>
 </div>

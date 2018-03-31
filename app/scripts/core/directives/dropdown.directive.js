@@ -49,7 +49,7 @@
         var vm = this;
 
 
-        vm.isOpen = false;
+        vm.isOpen =  $scope.$parent.vm.dropdownOpen;
 
         vm.toggle = toggle;
         vm.open   = open;
@@ -57,6 +57,7 @@
 
         $scope.$watch('open', function () {
            vm.isOpen = $scope.open;
+
         });
 
         ////////////////
