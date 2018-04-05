@@ -37,7 +37,6 @@
 				$rootScope.auth.logout = logout;
 				
 				//var firebaseUser = $firebaseAuth().$getAuth();
-				console.info($rootScope.auth);
 				defer.resolve();
 			});
 
